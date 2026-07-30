@@ -221,6 +221,7 @@
   }
   .admin-item-btns button:active{transform:scale(.96);}
   .admin-item-btns .del-btn{border-color:var(--red);color:var(--red);}
+  .admin-item-btns .mv{flex:0 0 46px;padding:9px 0;font-size:15px;line-height:1;background:var(--sun-soft);border-color:rgba(242,179,61,.5);color:var(--sun-deep);}
   .form-card{border-radius:var(--r-lg);padding:24px 22px;}
   .form-card h3{font-size:16px;font-weight:700;letter-spacing:.1em;margin-bottom:16px;}
   .form-btns{display:flex;gap:11px;margin-top:22px;}
@@ -768,8 +769,14 @@ function renderAdmin() {
   let rows = "";
   if (items.length === 0) {
     rows = '<p class="center-msg">Bu bölümde ürün yok.</p>';
+    if (menu.categories.length > 1) {
+      rows += '<button class="btn-block btn-danger-outline" id="delCatBtn">BU KATEGORİYİ SİL</button>';
+    }
   }
-  items.forEach(item => {
+  items.forEach((item, idx) => {
+    const mv =
+      (idx > 0 ? '<button class="mv" data-up="' + item.id + '" title="Yukarı taşı">↑</button>' : "") +
+      (idx < items.length - 1 ? '<button class="mv" data-down="' + item.id + '" title="Aşağı taşı">↓</button>' : "");
     rows +=
       '<div class="admin-item glass">' +
         '<div class="admin-item-row">' +
@@ -780,6 +787,7 @@ function renderAdmin() {
           '<span class="price-pill">' + esc(fmtPrice(item.price)) + "</span>" +
         "</div>" +
         '<div class="admin-item-btns">' +
+          mv +
           '<button data-edit="' + item.id + '">DÜZENLE</button>' +
           '<button class="del-btn" data-del="' + item.id + '">SİL</button>' +
         "</div>" +
@@ -802,6 +810,7 @@ function renderAdmin() {
       "</div>" +
       '<div class="admin-tabs">' + tabs + "</div>" +
       '<button class="btn-block btn-sea" id="addBtn" style="margin-top:10px">+ YENİ ÜRÜN EKLE</button>' +
+      '<button class="btn-block btn-outline" id="addCatBtn" style="margin-top:10px">+ YENİ KATEGORİ EKLE</button>' +
       '<div style="margin-top:16px">' + rows + "</div>" +
       '<div class="publish-bar">' +
         '<button class="btn-block btn-ink" id="exportBtn">YAYINLA — GÜNCEL index.html İNDİR</button>' +
@@ -809,8 +818,8 @@ function renderAdmin() {
       "</div>" +
       '<div class="admin-note">' +
         "Yaptığın değişiklikler bu tarayıcıda anında görünür. " +
-        "<b>Herkesin görmesi için:</b> «YAYINLA» butonuna bas, inen <b>index.html</b> dosyasını Netlify'a sürükle-bırak. " +
-        "Menü güncel haliyle tüm ziyaretçilere açılır." +
+        "<b>Herkesin görmesi için:</b> «YAYINLA» butonuna bas, inen <b>index.html</b> dosyasını GitHub'daki repo'na yükle (Add file → Upload files). " +
+        "Site birkaç saniyede kendini günceller." +
       "</div>" +
     "</div>";
 
@@ -827,6 +836,37 @@ function renderAdmin() {
   });
 
   document.getElementById("addBtn").addEventListener("click", () => openForm(null, menu));
+
+  document.getElementById("addCatBtn").addEventListener("click", () => openCatForm(menu));
+
+  app.querySelectorAll("[data-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      moveItem(menu, Number(btn.dataset.up), -1);
+      saveMenu(menu);
+      renderAdmin();
+    });
+  });
+
+  app.querySelectorAll("[data-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      moveItem(menu, Number(btn.dataset.down), 1);
+      saveMenu(menu);
+      renderAdmin();
+    });
+  });
+
+  const delCatBtn = document.getElementById("delCatBtn");
+  if (delCatBtn) {
+    delCatBtn.addEventListener("click", () => {
+      if (window.confirm('"' + menu.labels[adminCat].tr + '" kategorisi silinsin mi?')) {
+        menu.categories = menu.categories.filter(c => c !== adminCat);
+        delete menu.labels[adminCat];
+        adminCat = menu.categories[0];
+        saveMenu(menu);
+        renderAdmin();
+      }
+    });
+  }
 
   app.querySelectorAll("[data-edit]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -857,6 +897,65 @@ function renderAdmin() {
       }
     });
   }
+}
+
+function slugify(s) {
+  const map = { "ç": "c", "ğ": "g", "ı": "i", "ö": "o", "ş": "s", "ü": "u",
+                "Ç": "c", "Ğ": "g", "İ": "i", "I": "i", "Ö": "o", "Ş": "s", "Ü": "u" };
+  return String(s).split("").map(c => map[c] || c).join("")
+    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+function moveItem(menu, id, dir) {
+  const arr = menu.items;
+  const i = arr.findIndex(x => x.id === id);
+  if (i < 0) return;
+  const cat = arr[i].cat;
+  let j = i + dir;
+  while (j >= 0 && j < arr.length && arr[j].cat !== cat) j += dir;
+  if (j < 0 || j >= arr.length) return;
+  const t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+}
+
+function openCatForm(menu) {
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  overlay.innerHTML =
+    '<form class="sheet" id="catForm">' +
+      '<div class="form-card">' +
+        "<h3>YENİ KATEGORİ</h3>" +
+        '<label class="field-label" for="cTr">Kategori Adı (Türkçe)</label>' +
+        '<input id="cTr" required placeholder="örn: Tatlılar">' +
+        '<label class="field-label" for="cEn">Kategori Adı (İngilizce)</label>' +
+        '<input id="cEn" required placeholder="örn: Desserts">' +
+        '<div class="form-btns">' +
+          '<button type="button" class="btn-outline" id="catCancel">VAZGEÇ</button>' +
+          '<button type="submit" class="btn-sea">EKLE</button>' +
+        "</div>" +
+      "</div>" +
+    "</form>";
+
+  overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+  overlay.querySelector("#catCancel").addEventListener("click", () => overlay.remove());
+
+  overlay.querySelector("#catForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const tr = overlay.querySelector("#cTr").value.trim();
+    const en = overlay.querySelector("#cEn").value.trim();
+    if (!tr || !en) return;
+    const base = slugify(tr) || "kategori";
+    let slug = base, n = 2;
+    while (menu.categories.indexOf(slug) !== -1) { slug = base + "-" + n; n++; }
+    menu.categories.push(slug);
+    menu.labels[slug] = { tr: tr, en: en };
+    saveMenu(menu);
+    adminCat = slug;
+    overlay.remove();
+    renderAdmin();
+  });
+
+  document.body.appendChild(overlay);
+  overlay.querySelector("#cTr").focus();
 }
 
 function openForm(item, menu) {
@@ -949,7 +1048,7 @@ async function exportHTML() {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
-    alert("Güncel index.html indirildi.\n\nŞimdi Netlify'daki sitene bu dosyayı sürükle-bırak — menü herkes için güncellenir.");
+    alert("Güncel index.html indirildi.\n\nŞimdi GitHub'daki repo'na gir → Add file → Upload files → bu dosyayı yükle. Site birkaç saniyede kendini günceller.");
   } catch (e) {
     alert("Dosya oluşturulamadı. Bu özellik site internette yayınlanmışken çalışır.");
   }
