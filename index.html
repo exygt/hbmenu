@@ -260,64 +260,261 @@
 <script>
 /*MENU_DATA_START*/
 const MENU_DATA = {
-  categories: ["aparatif", "pizza", "manti", "hamburger", "icecek"],
-  labels: {
-    aparatif:   { tr: "Aparatifler", en: "Appetizers" },
-    pizza:      { tr: "Pizza",       en: "Pizza" },
-    manti:      { tr: "Mantı",       en: "Manti" },
-    hamburger:  { tr: "Hamburger",   en: "Hamburgers" },
-    icecek:     { tr: "İçecekler",   en: "Drinks" }
+  "categories": [
+    "aparatif",
+    "pizza",
+    "manti",
+    "hamburger",
+    "icecek"
+  ],
+  "labels": {
+    "aparatif": {
+      "tr": "Aparatifler",
+      "en": "Appetizers"
+    },
+    "pizza": {
+      "tr": "Pizza",
+      "en": "Pizza"
+    },
+    "manti": {
+      "tr": "Mantı",
+      "en": "Manti"
+    },
+    "hamburger": {
+      "tr": "Hamburger",
+      "en": "Hamburgers"
+    },
+    "icecek": {
+      "tr": "İçecekler",
+      "en": "Drinks"
+    }
   },
-  items: [
-    { id: 1, cat: "aparatif", tr: "Sigara Böreği", en: "Crispy Cheese Rolls", price: "180",
-      itr: "Yufka, beyaz peynir, maydanoz. Yanında süzme yoğurt ile servis edilir.",
-      ien: "Thin pastry, white cheese, parsley. Served with strained yogurt." },
-    { id: 2, cat: "aparatif", tr: "Patates Kızartması", en: "French Fries", price: "150",
-      itr: "El kesimi patates, deniz tuzu. Ketçap ve mayonez ile.",
-      ien: "Hand-cut potatoes, sea salt. With ketchup and mayonnaise." },
-    { id: 3, cat: "aparatif", tr: "Soğan Halkası", en: "Onion Rings", price: "170",
-      itr: "Soğan, galeta unu, baharat karışımı. Çıtır kaplama ile kızartılır.",
-      ien: "Onion, breadcrumbs, spice mix. Fried with a crispy coating." },
-
-    { id: 4, cat: "pizza", tr: "Margherita", en: "Margherita", price: "320",
-      itr: "Domates sosu, mozzarella, taze fesleğen, zeytinyağı.",
-      ien: "Tomato sauce, mozzarella, fresh basil, olive oil." },
-    { id: 5, cat: "pizza", tr: "Karışık Pizza", en: "Mixed Pizza", price: "380",
-      itr: "Domates sosu, mozzarella, sucuk, sosis, mantar, yeşil biber, mısır.",
-      ien: "Tomato sauce, mozzarella, Turkish pepperoni, sausage, mushroom, green pepper, corn." },
-    { id: 6, cat: "pizza", tr: "Akdeniz Pizza", en: "Mediterranean Pizza", price: "360",
-      itr: "Domates sosu, mozzarella, beyaz peynir, zeytin, cherry domates, roka.",
-      ien: "Tomato sauce, mozzarella, feta, olives, cherry tomatoes, arugula." },
-
-    { id: 7, cat: "manti", tr: "Klasik Mantı", en: "Classic Manti", price: "280",
-      itr: "El açması hamur, kıymalı iç harç, sarımsaklı yoğurt, kızdırılmış tereyağı ve pul biber.",
-      ien: "Hand-rolled dough, minced beef filling, garlic yogurt, melted butter and chili flakes." },
-    { id: 8, cat: "manti", tr: "Çıtır Mantı", en: "Crispy Fried Manti", price: "300",
-      itr: "Kızarmış mantı, yoğurt sos, nane ve sumak ile servis edilir.",
-      ien: "Fried manti, yogurt sauce, served with mint and sumac." },
-    { id: 9, cat: "manti", tr: "Domates Soslu Mantı", en: "Manti with Tomato Sauce", price: "290",
-      itr: "Haşlanmış mantı, domates sos, sarımsaklı yoğurt, tereyağı.",
-      ien: "Boiled manti, tomato sauce, garlic yogurt, butter." },
-
-    { id: 10, cat: "hamburger", tr: "Klasik Burger", en: "Classic Burger", price: "290",
-      itr: "Dana köfte, marul, domates, turşu, burger sos, patates kızartması ile.",
-      ien: "Beef patty, lettuce, tomato, pickles, burger sauce, served with fries." },
-    { id: 11, cat: "hamburger", tr: "Cheeseburger", en: "Cheeseburger", price: "320",
-      itr: "Dana köfte, cheddar peyniri, karamelize soğan, marul, domates, özel sos.",
-      ien: "Beef patty, cheddar cheese, caramelized onion, lettuce, tomato, special sauce." },
-    { id: 12, cat: "hamburger", tr: "Double Burger", en: "Double Burger", price: "380",
-      itr: "Çift dana köfte, çift cheddar, füme et, turşu, barbekü sos.",
-      ien: "Double beef patty, double cheddar, pastrami, pickles, BBQ sauce." },
-
-    { id: 13, cat: "icecek", tr: "Taze Sıkılmış Portakal Suyu", en: "Fresh Squeezed Orange Juice", price: "150",
-      itr: "Günlük taze portakallar ile hazırlanır.",
-      ien: "Made daily with fresh oranges." },
-    { id: 14, cat: "icecek", tr: "Ayran", en: "Ayran", price: "60",
-      itr: "Geleneksel yoğurt içeceği.",
-      ien: "Traditional Turkish yogurt drink." },
-    { id: 15, cat: "icecek", tr: "Buz Gibi Limonata", en: "Ice Cold Lemonade", price: "120",
-      itr: "Taze limon, nane, buz. Ev yapımı.",
-      ien: "Fresh lemon, mint, ice. Homemade." }
+  "items": [
+    {
+      "id": 2,
+      "cat": "aparatif",
+      "tr": "Patates Kızartması",
+      "en": "French Fries",
+      "price": "400",
+      "itr": "Patates, baharat, tuz. Ketçap ve mayonez ile.",
+      "ien": "French fries, spice, salt. With ketchup and mayonnaise."
+    },
+    {
+      "id": 4,
+      "cat": "pizza",
+      "tr": "Margherita Pizza",
+      "en": "Margherita Pizza",
+      "price": "450",
+      "itr": "",
+      "ien": ""
+    },
+    {
+      "id": 5,
+      "cat": "pizza",
+      "tr": "Karışık Pizza",
+      "en": "Mixed Pizza",
+      "price": "650",
+      "itr": "Sucuk, sosis, mısır, zeytin, kırmızı biber, yeşil biber.",
+      "ien": "Loaded with Turkish sausage, beef sausage, corn, olives, red pepper, green pepper."
+    },
+    {
+      "id": 6,
+      "cat": "pizza",
+      "tr": "Füme Pizza",
+      "en": "Smoked Meat Pizza",
+      "price": "750",
+      "itr": "Mozzarella peyniri, mısır, cherry domates ve füme et dilimleri ile.",
+      "ien": "With mozzarella cheese, corn, cherry tomatoes, and smoked beef slices."
+    },
+    {
+      "id": 7,
+      "cat": "manti",
+      "tr": "Yakında",
+      "en": "Soon",
+      "price": "0",
+      "itr": "",
+      "ien": ""
+    },
+    {
+      "id": 10,
+      "cat": "hamburger",
+      "tr": "Klasik Burger",
+      "en": "Classic Burger",
+      "price": "600",
+      "itr": "Dana köfte, marul, domates, burger sos, patates kızartması ile.",
+      "ien": "Beef patty, lettuce, tomato, burger sauce, served with fries."
+    },
+    {
+      "id": 11,
+      "cat": "hamburger",
+      "tr": "Cheeseburger",
+      "en": "Cheeseburger",
+      "price": "650",
+      "itr": "Dana köfte, cheddar peyniri, marul, domates, özel sos. Patates kızartması ile.",
+      "ien": "Beef patty, cheddar cheese, lettuce, tomato, special sauce. With french fries."
+    },
+    {
+      "id": 12,
+      "cat": "hamburger",
+      "tr": "Tavuk Burger",
+      "en": "Chicken Burger",
+      "price": "550",
+      "itr": "Çıtır tavuk fileto, marul, domates ve özel burger sosu ile.",
+      "ien": "Crispy chicken fillet with lettuce, tomato, and special burger sauce."
+    },
+    {
+      "id": 13,
+      "cat": "icecek",
+      "tr": "Su",
+      "en": "Water",
+      "price": "50",
+      "itr": "",
+      "ien": ""
+    },
+    {
+      "id": 14,
+      "cat": "icecek",
+      "tr": "Soğuk İçecekler",
+      "en": "Soft Drinks",
+      "price": "150",
+      "itr": "Coca Cola, Fanta, Sprite, Fuse Tea",
+      "ien": "Coca Cola, Fanta, Sprite, Fuse Tea"
+    },
+    {
+      "id": 15,
+      "cat": "icecek",
+      "tr": "RedBull",
+      "en": "RedBull",
+      "price": "175",
+      "itr": "",
+      "ien": ""
+    },
+    {
+      "cat": "aparatif",
+      "tr": "Sosis & Patates",
+      "en": "Sausage & Fries",
+      "price": "550",
+      "itr": "Dana sosis, çıtır patates kızartması.",
+      "ien": "Beef sausage with crispy french fries.",
+      "id": 1785447511608
+    },
+    {
+      "cat": "aparatif",
+      "tr": "Çıtır Tavuk",
+      "en": "Crispy Chicken",
+      "price": "600",
+      "itr": "Çıtır Tavuk ve patates kızartması",
+      "ien": "Crispy chicken and french fries.",
+      "id": 1785447948858
+    },
+    {
+      "cat": "aparatif",
+      "tr": "Bira Tabağı",
+      "en": "Beer Platter",
+      "price": "700",
+      "itr": "Çıtır tavuk parçaları, dana sosis, çıtır soğan halkası ve patates kızartması ile.",
+      "ien": "Crispy chicken bites, beef sausage, crispy onion rings, and french fries.",
+      "id": 1785448249352
+    },
+    {
+      "cat": "icecek",
+      "tr": "Efes Bira",
+      "en": "Efes Beer",
+      "price": "325",
+      "itr": "Pilsen, Malt, Green",
+      "ien": "Pilsen, Malt, Green",
+      "id": 1785449034634
+    },
+    {
+      "cat": "icecek",
+      "tr": "Bomonti Filtresiz Bira",
+      "en": "Bomonti Filtresiz Beer",
+      "price": "350",
+      "itr": "",
+      "ien": "",
+      "id": 1785449068818
+    },
+    {
+      "cat": "icecek",
+      "tr": "BECKS",
+      "en": "BECKS",
+      "price": "400",
+      "itr": "",
+      "ien": "",
+      "id": 1785449164442
+    },
+    {
+      "cat": "icecek",
+      "tr": "BUD",
+      "en": "BUD",
+      "price": "400",
+      "itr": "",
+      "ien": "",
+      "id": 1785449181435
+    },
+    {
+      "cat": "icecek",
+      "tr": "Miller",
+      "en": "Miller",
+      "price": "400",
+      "itr": "",
+      "ien": "",
+      "id": 1785449274371
+    },
+    {
+      "cat": "icecek",
+      "tr": "CORONA",
+      "en": "CORONA",
+      "price": "450",
+      "itr": "",
+      "ien": "",
+      "id": 1785449288437
+    },
+    {
+      "cat": "icecek",
+      "tr": "Amsterdam",
+      "en": "Amsterdam",
+      "price": "460",
+      "itr": "",
+      "ien": "",
+      "id": 1785449301720
+    },
+    {
+      "cat": "icecek",
+      "tr": "Kırmızı Şarap 0.70L",
+      "en": "Red Wine 0.70L",
+      "price": "1000",
+      "itr": "",
+      "ien": "",
+      "id": 1785449480370
+    },
+    {
+      "cat": "icecek",
+      "tr": "Beyaz Şarap 0.70L",
+      "en": "White Wine 0.70L",
+      "price": "1000",
+      "itr": "",
+      "ien": "",
+      "id": 1785449532469
+    },
+    {
+      "cat": "icecek",
+      "tr": "Kırmızı Şarap 1.5L",
+      "en": "Red Wine 1.5L",
+      "price": "1500",
+      "itr": "",
+      "ien": "",
+      "id": 1785449553753
+    },
+    {
+      "cat": "icecek",
+      "tr": "Beyaz Şarap 1.5L",
+      "en": "White Wine 1.5L",
+      "price": "1500",
+      "itr": "",
+      "ien": "",
+      "id": 1785449585927
+    }
   ]
 };
 /*MENU_DATA_END*/
