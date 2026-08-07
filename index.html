@@ -136,10 +136,20 @@
     font-size:14px;font-weight:600;border:1px solid rgba(242,179,61,.45);
   }
   .item-ing{font-size:13px;line-height:1.55;color:var(--ink-soft);margin-top:5px;}
+  .item-img{width:64px;height:64px;border-radius:var(--r-sm);object-fit:cover;flex-shrink:0;background:rgba(34,49,60,.06);}
   .menu-footer{margin-top:44px;text-align:center;font-size:10px;letter-spacing:.3em;color:var(--ink-soft);}
   .menu-footer a{display:inline-block;margin-top:13px;text-decoration:underline;font-size:11px;letter-spacing:.14em;}
   .center-msg{text-align:center;padding:64px 0;letter-spacing:.08em;color:var(--ink-soft);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- popup ---------- */
+  .popup-overlay{position:fixed;inset:0;z-index:100;background:rgba(34,49,60,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease both;}
+  .popup-box{position:relative;width:100%;max-width:22rem;background:var(--card-solid);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);animation:sheetUp .35s cubic-bezier(.22,1,.36,1) both;}
+  .popup-close{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);border:none;font-size:22px;line-height:1;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:transform .15s;}
+  .popup-close:active{transform:scale(.95);}
+  .popup-img{width:100%;height:auto;display:block;}
+  .popup-title{padding:18px 20px 0;font-size:17px;font-weight:700;letter-spacing:.04em;color:var(--ink);}
+  .popup-sub{padding:8px 20px 18px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
 
   /* ---------- whatsapp float ---------- */
   .wa-float{
@@ -264,6 +274,12 @@
 <script>
 /*MENU_DATA_START*/
 const MENU_DATA = {
+  "popup": {
+    "enabled": false,
+    "image": "",
+    "title": "",
+    "subtitle": ""
+  },
   "categories": [
     "aparatif",
     "pizza",
@@ -301,7 +317,8 @@ const MENU_DATA = {
       "en": "French Fries",
       "price": "400",
       "itr": "Patates, baharat, tuz. Ketçap ve mayonez ile.",
-      "ien": "French fries, spice, salt. With ketchup and mayonnaise."
+      "ien": "French fries, spice, salt. With ketchup and mayonnaise.",
+      "img": ""
     },
     {
       "id": 4,
@@ -310,7 +327,8 @@ const MENU_DATA = {
       "en": "Margherita Pizza",
       "price": "450",
       "itr": "",
-      "ien": ""
+      "ien": "",
+      "img": ""
     },
     {
       "id": 5,
@@ -319,7 +337,8 @@ const MENU_DATA = {
       "en": "Mixed Pizza",
       "price": "650",
       "itr": "Sucuk, sosis, mısır, zeytin, kırmızı biber, yeşil biber.",
-      "ien": "Loaded with Turkish sausage, beef sausage, corn, olives, red pepper, green pepper."
+      "ien": "Loaded with Turkish sausage, beef sausage, corn, olives, red pepper, green pepper.",
+      "img": ""
     },
     {
       "id": 6,
@@ -328,7 +347,8 @@ const MENU_DATA = {
       "en": "Smoked Meat Pizza",
       "price": "750",
       "itr": "Mozzarella peyniri, mısır, cherry domates ve füme et dilimleri ile.",
-      "ien": "With mozzarella cheese, corn, cherry tomatoes, and smoked beef slices."
+      "ien": "With mozzarella cheese, corn, cherry tomatoes, and smoked beef slices.",
+      "img": ""
     },
     {
       "id": 7,
@@ -337,7 +357,8 @@ const MENU_DATA = {
       "en": "Mantı",
       "price": "500",
       "itr": "Yoğurt ve sos ile servis edilir.",
-      "ien": "Served with yogurt and a special sauce."
+      "ien": "Served with yogurt and a special sauce.",
+      "img": ""
     },
     {
       "id": 10,
@@ -346,7 +367,8 @@ const MENU_DATA = {
       "en": "Classic Burger",
       "price": "600",
       "itr": "Dana köfte, marul, domates, burger sos, patates kızartması ile.",
-      "ien": "Beef patty, lettuce, tomato, burger sauce, served with fries."
+      "ien": "Beef patty, lettuce, tomato, burger sauce, served with fries.",
+      "img": ""
     },
     {
       "id": 11,
@@ -355,7 +377,8 @@ const MENU_DATA = {
       "en": "Cheeseburger",
       "price": "650",
       "itr": "Dana köfte, cheddar peyniri, marul, domates, özel sos. Patates kızartması ile.",
-      "ien": "Beef patty, cheddar cheese, lettuce, tomato, special sauce. With french fries."
+      "ien": "Beef patty, cheddar cheese, lettuce, tomato, special sauce. With french fries.",
+      "img": ""
     },
     {
       "id": 12,
@@ -364,7 +387,8 @@ const MENU_DATA = {
       "en": "Chicken Burger",
       "price": "550",
       "itr": "Çıtır tavuk fileto, marul, domates ve özel burger sosu ile.",
-      "ien": "Crispy chicken fillet with lettuce, tomato, and special burger sauce."
+      "ien": "Crispy chicken fillet with lettuce, tomato, and special burger sauce.",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -373,7 +397,8 @@ const MENU_DATA = {
       "price": "50",
       "itr": "",
       "ien": "",
-      "id": 1785450539631
+      "id": 1785450539631,
+      "img": ""
     },
     {
       "id": 14,
@@ -382,7 +407,8 @@ const MENU_DATA = {
       "en": "Soft Drinks",
       "price": "150",
       "itr": "Coca Cola, Fanta, Sprite, Fuse Tea",
-      "ien": "Coca Cola, Fanta, Sprite, Fuse Tea"
+      "ien": "Coca Cola, Fanta, Sprite, Fuse Tea",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -391,7 +417,8 @@ const MENU_DATA = {
       "price": "125",
       "itr": "",
       "ien": "",
-      "id": 1785488786310
+      "id": 1785488786310,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -400,7 +427,8 @@ const MENU_DATA = {
       "price": "500",
       "itr": "Dana sosis, çıtır patates kızartması.",
       "ien": "Beef sausage with crispy french fries.",
-      "id": 1785447511608
+      "id": 1785447511608,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -409,7 +437,8 @@ const MENU_DATA = {
       "price": "600",
       "itr": "Çıtır Tavuk ve patates kızartması",
       "ien": "Crispy chicken and french fries.",
-      "id": 1785447948858
+      "id": 1785447948858,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -418,7 +447,8 @@ const MENU_DATA = {
       "price": "700",
       "itr": "Çıtır tavuk parçaları, dana sosis, çıtır soğan halkası ve patates kızartması ile.",
       "ien": "Crispy chicken bites, beef sausage, crispy onion rings, and french fries.",
-      "id": 1785448249352
+      "id": 1785448249352,
+      "img": ""
     },
     {
       "id": 15,
@@ -427,7 +457,8 @@ const MENU_DATA = {
       "en": "RedBull",
       "price": "175",
       "itr": "",
-      "ien": ""
+      "ien": "",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -436,7 +467,8 @@ const MENU_DATA = {
       "price": "175",
       "itr": "",
       "ien": "",
-      "id": 1785496413767
+      "id": 1785496413767,
+      "img": ""
     },
     {
       "id": 13,
@@ -445,7 +477,8 @@ const MENU_DATA = {
       "en": "Capri Sun",
       "price": "100",
       "itr": "",
-      "ien": ""
+      "ien": "",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -454,7 +487,8 @@ const MENU_DATA = {
       "price": "100",
       "itr": "",
       "ien": "",
-      "id": 1785451348074
+      "id": 1785451348074,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -463,7 +497,8 @@ const MENU_DATA = {
       "price": "300",
       "itr": "",
       "ien": "",
-      "id": 1785485854556
+      "id": 1785485854556,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -472,7 +507,8 @@ const MENU_DATA = {
       "price": "350",
       "itr": "Pilsen, Malt, Green",
       "ien": "Pilsen, Malt, Green",
-      "id": 1785449034634
+      "id": 1785449034634,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -481,7 +517,8 @@ const MENU_DATA = {
       "price": "375",
       "itr": "",
       "ien": "",
-      "id": 1785449068818
+      "id": 1785449068818,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -490,7 +527,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "",
       "ien": "",
-      "id": 1785449164442
+      "id": 1785449164442,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -499,7 +537,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "",
       "ien": "",
-      "id": 1785449181435
+      "id": 1785449181435,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -508,7 +547,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "",
       "ien": "",
-      "id": 1785449274371
+      "id": 1785449274371,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -517,7 +557,8 @@ const MENU_DATA = {
       "price": "425",
       "itr": "",
       "ien": "",
-      "id": 1785449288437
+      "id": 1785449288437,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -526,7 +567,8 @@ const MENU_DATA = {
       "price": "435",
       "itr": "",
       "ien": "",
-      "id": 1785449301720
+      "id": 1785449301720,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -535,7 +577,8 @@ const MENU_DATA = {
       "price": "1000",
       "itr": "",
       "ien": "",
-      "id": 1785449480370
+      "id": 1785449480370,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -544,7 +587,8 @@ const MENU_DATA = {
       "price": "1000",
       "itr": "",
       "ien": "",
-      "id": 1785449532469
+      "id": 1785449532469,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -553,7 +597,8 @@ const MENU_DATA = {
       "price": "1500",
       "itr": "",
       "ien": "",
-      "id": 1785449553753
+      "id": 1785449553753,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -562,7 +607,8 @@ const MENU_DATA = {
       "price": "1500",
       "itr": "",
       "ien": "",
-      "id": 1785449585927
+      "id": 1785449585927,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -571,7 +617,8 @@ const MENU_DATA = {
       "price": "350",
       "itr": "",
       "ien": "",
-      "id": 1786096615325
+      "id": 1786096615325,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -580,7 +627,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "Sucuk, Kaşar, Salam, Domatesli tost. Salata ve patates kızartması ile servis edilir.",
       "ien": "Sucuk, cheese, salami, and tomato. Served with salad and French fries.",
-      "id": 1786096772645
+      "id": 1786096772645,
+      "img": ""
     }
   ]
 };
@@ -664,6 +712,13 @@ function waSVG() {
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.186 8.186 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/></svg>';
 }
 
+/* ================= POPUP ================= */
+function closePopup() {
+  const el = document.getElementById("popupOverlay");
+  if (el) el.remove();
+  sessionStorage.setItem("hb-popup-seen", "1");
+}
+
 /* ================= DİL SEÇİMİ ================= */
 function renderLangSelect() {
   document.documentElement.lang = "tr";
@@ -704,13 +759,17 @@ function renderMenu(lang) {
     let rows = "";
     g.items.forEach(item => {
       const ing = (lang === "tr" ? item.itr : item.ien) || "";
+      const imgHtml = item.img ? '<img src="' + esc(item.img) + '" class="item-img" alt="" loading="lazy">' : "";
       rows +=
-        '<div class="item-card glass">' +
-          '<div class="item-top">' +
-            '<span class="item-name">' + esc(lang === "tr" ? item.tr : item.en) + "</span>" +
-            '<span class="price-pill">' + esc(fmtPrice(item.price)) + "</span>" +
+        '<div class="item-card glass" style="display:flex;align-items:center;gap:14px;">' +
+          imgHtml +
+          '<div style="flex:1;min-width:0;">' +
+            '<div class="item-top">' +
+              '<span class="item-name">' + esc(lang === "tr" ? item.tr : item.en) + "</span>" +
+              '<span class="price-pill">' + esc(fmtPrice(item.price)) + "</span>" +
+            "</div>" +
+            (ing ? '<p class="item-ing">' + esc(ing) + "</p>" : "") +
           "</div>" +
-          (ing ? '<p class="item-ing">' + esc(ing) + "</p>" : "") +
         "</div>";
     });
     sections +=
@@ -766,7 +825,7 @@ function renderMenu(lang) {
     });
   });
 
-  // WhatsApp butonu: sayfanın ~%27'si kaydırılınca belirir
+  // WhatsApp butonu
   const waFloat = document.getElementById("waFloat");
   const onScroll = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -775,10 +834,27 @@ function renderMenu(lang) {
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Pop-up
+  const popup = menu.popup;
+  if (popup && popup.enabled && popup.image && !sessionStorage.getItem("hb-popup-seen")) {
+    const overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+    overlay.id = "popupOverlay";
+    overlay.innerHTML =
+      '<div class="popup-box">' +
+        '<button class="popup-close" onclick="closePopup()">&times;</button>' +
+        (popup.title ? '<h3 class="popup-title">' + esc(popup.title) + "</h3>" : "") +
+        '<img src="' + esc(popup.image) + '" class="popup-img" alt="">' +
+        (popup.subtitle ? '<p class="popup-sub">' + esc(popup.subtitle) + "</p>" : "") +
+      "</div>";
+    document.body.appendChild(overlay);
+  }
 }
 </script>
 <script>
 /* ================= ADMİN ================= */
+let adminView = "items";
 let adminCat = "aparatif";
 
 function renderAdminLogin(error) {
@@ -814,43 +890,6 @@ function renderAdminLogin(error) {
 function renderAdmin() {
   document.documentElement.lang = "tr";
   const menu = getMenu();
-  const items = menu.items.filter(i => i.cat === adminCat);
-
-  let tabs = "";
-  menu.categories.forEach(c => {
-    tabs +=
-      '<button class="admin-tab' + (c === adminCat ? " active" : "") + '" data-cat="' + esc(c) + '">' +
-      esc(menu.labels[c].tr) + "</button>";
-  });
-
-  let rows = "";
-  if (items.length === 0) {
-    rows = '<p class="center-msg">Bu bölümde ürün yok.</p>';
-    if (menu.categories.length > 1) {
-      rows += '<button class="btn-block btn-danger-outline" id="delCatBtn">BU KATEGORİYİ SİL</button>';
-    }
-  }
-  items.forEach((item, idx) => {
-    const mv =
-      (idx > 0 ? '<button class="mv" data-up="' + item.id + '" title="Yukarı taşı">↑</button>' : "") +
-      (idx < items.length - 1 ? '<button class="mv" data-down="' + item.id + '" title="Aşağı taşı">↓</button>' : "");
-    rows +=
-      '<div class="admin-item glass">' +
-        '<div class="admin-item-row">' +
-          "<div>" +
-            '<div class="admin-item-name">' + esc(item.tr) + "</div>" +
-            '<div class="admin-item-en">' + esc(item.en) + "</div>" +
-          "</div>" +
-          '<span class="price-pill">' + esc(fmtPrice(item.price)) + "</span>" +
-        "</div>" +
-        '<div class="admin-item-btns">' +
-          mv +
-          '<button data-edit="' + item.id + '">DÜZENLE</button>' +
-          '<button class="del-btn" data-del="' + item.id + '">SİL</button>' +
-        "</div>" +
-      "</div>";
-  });
-
   const hasLocal = !!localStorage.getItem(MENU_KEY);
 
   app.innerHTML =
@@ -865,10 +904,12 @@ function renderAdmin() {
           '<button id="logoutBtn">ÇIKIŞ</button>' +
         "</div>" +
       "</div>" +
-      '<div class="admin-tabs">' + tabs + "</div>" +
-      '<button class="btn-block btn-sea" id="addBtn" style="margin-top:10px">+ YENİ ÜRÜN EKLE</button>' +
-      '<button class="btn-block btn-outline" id="addCatBtn" style="margin-top:10px">+ YENİ KATEGORİ EKLE</button>' +
-      '<div style="margin-top:16px">' + rows + "</div>" +
+      '<div class="admin-tabs">' +
+        '<button class="admin-tab' + (adminView === "items" ? " active" : "") + '" data-view="items">ÜRÜNLER</button>' +
+        '<button class="admin-tab' + (adminView === "categories" ? " active" : "") + '" data-view="categories">KATEGORİLER</button>' +
+        '<button class="admin-tab' + (adminView === "popup" ? " active" : "") + '" data-view="popup">POP-UP</button>' +
+      "</div>" +
+      '<div id="adminContent"></div>' +
       '<div class="publish-bar">' +
         '<button class="btn-block btn-ink" id="exportBtn">YAYINLA — GÜNCEL index.html İNDİR</button>' +
         (hasLocal ? '<button class="btn-block btn-outline" id="resetBtn">YEREL DEĞİŞİKLİKLERİ SIFIRLA</button>' : "") +
@@ -880,67 +921,16 @@ function renderAdmin() {
       "</div>" +
     "</div>";
 
+  app.querySelectorAll("[data-view]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      adminView = btn.dataset.view;
+      renderAdmin();
+    });
+  });
+
   document.getElementById("logoutBtn").addEventListener("click", () => {
     sessionStorage.removeItem(ADMIN_KEY);
     location.hash = "#/";
-  });
-
-  app.querySelectorAll(".admin-tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-      adminCat = tab.dataset.cat;
-      renderAdmin();
-    });
-  });
-
-  document.getElementById("addBtn").addEventListener("click", () => openForm(null, menu));
-
-  document.getElementById("addCatBtn").addEventListener("click", () => openCatForm(menu));
-
-  app.querySelectorAll("[data-up]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      moveItem(menu, Number(btn.dataset.up), -1);
-      saveMenu(menu);
-      renderAdmin();
-    });
-  });
-
-  app.querySelectorAll("[data-down]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      moveItem(menu, Number(btn.dataset.down), 1);
-      saveMenu(menu);
-      renderAdmin();
-    });
-  });
-
-  const delCatBtn = document.getElementById("delCatBtn");
-  if (delCatBtn) {
-    delCatBtn.addEventListener("click", () => {
-      if (window.confirm('"' + menu.labels[adminCat].tr + '" kategorisi silinsin mi?')) {
-        menu.categories = menu.categories.filter(c => c !== adminCat);
-        delete menu.labels[adminCat];
-        adminCat = menu.categories[0];
-        saveMenu(menu);
-        renderAdmin();
-      }
-    });
-  }
-
-  app.querySelectorAll("[data-edit]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = menu.items.find(i => i.id === Number(btn.dataset.edit));
-      if (item) openForm(item, menu);
-    });
-  });
-
-  app.querySelectorAll("[data-del]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = menu.items.find(i => i.id === Number(btn.dataset.del));
-      if (item && window.confirm('"' + item.tr + '" silinsin mi?')) {
-        menu.items = menu.items.filter(i => i.id !== item.id);
-        saveMenu(menu);
-        renderAdmin();
-      }
-    });
   });
 
   document.getElementById("exportBtn").addEventListener("click", exportHTML);
@@ -954,6 +944,212 @@ function renderAdmin() {
       }
     });
   }
+
+  const content = document.getElementById("adminContent");
+  if (adminView === "items") renderAdminItems(menu, content);
+  else if (adminView === "categories") renderAdminCategories(menu, content);
+  else if (adminView === "popup") renderAdminPopup(menu, content);
+}
+
+function renderAdminItems(menu, container) {
+  const items = menu.items.filter(i => i.cat === adminCat);
+
+  let tabs = "";
+  menu.categories.forEach(c => {
+    tabs +=
+      '<button class="admin-tab' + (c === adminCat ? " active" : "") + '" data-cat="' + esc(c) + '">' +
+      esc(menu.labels[c].tr) + "</button>";
+  });
+
+  let rows = "";
+  if (items.length === 0) {
+    rows = '<p class="center-msg">Bu bölümde ürün yok.</p>';
+  }
+  items.forEach((item, idx) => {
+    const mv =
+      (idx > 0 ? '<button class="mv" data-up="' + item.id + '" title="Yukarı taşı">↑</button>' : "") +
+      (idx < items.length - 1 ? '<button class="mv" data-down="' + item.id + '" title="Aşağı taşı">↓</button>' : "");
+    rows +=
+      '<div class="admin-item glass">' +
+        '<div class="admin-item-row">' +
+          "<div>" +
+            '<div class="admin-item-name">' + esc(item.tr) + "</div>" +
+            '<div class="admin-item-en">' + esc(item.en) + "</div>" +
+          "</div>" +
+          '<span class="price-pill">' + esc(fmtPrice(item.price)) + "</span>" +
+        "</div>" +
+        (item.img ? '<div style="margin-top:6px;font-size:11px;color:var(--ink-soft);">🖼️ Görsel var</div>' : "") +
+        '<div class="admin-item-btns">' +
+          mv +
+          '<button data-edit="' + item.id + '">DÜZENLE</button>' +
+          '<button class="del-btn" data-del="' + item.id + '">SİL</button>' +
+        "</div>" +
+      "</div>";
+  });
+
+  container.innerHTML =
+    '<div class="admin-tabs">' + tabs + "</div>" +
+    '<button class="btn-block btn-sea" id="addBtn" style="margin-top:10px">+ YENİ ÜRÜN EKLE</button>' +
+    '<div style="margin-top:16px">' + rows + "</div>";
+
+  container.querySelectorAll("[data-cat]").forEach(tab => {
+    tab.addEventListener("click", () => {
+      adminCat = tab.dataset.cat;
+      renderAdminItems(menu, container);
+    });
+  });
+
+  container.querySelector("#addBtn").addEventListener("click", () => openForm(null, menu));
+
+  container.querySelectorAll("[data-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      moveItem(menu, Number(btn.dataset.up), -1);
+      saveMenu(menu);
+      renderAdminItems(menu, container);
+    });
+  });
+
+  container.querySelectorAll("[data-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      moveItem(menu, Number(btn.dataset.down), 1);
+      saveMenu(menu);
+      renderAdminItems(menu, container);
+    });
+  });
+
+  container.querySelectorAll("[data-edit]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = menu.items.find(i => i.id === Number(btn.dataset.edit));
+      if (item) openForm(item, menu);
+    });
+  });
+
+  container.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = menu.items.find(i => i.id === Number(btn.dataset.del));
+      if (item && window.confirm('"' + item.tr + '" silinsin mi?')) {
+        menu.items = menu.items.filter(i => i.id !== item.id);
+        saveMenu(menu);
+        renderAdminItems(menu, container);
+      }
+    });
+  });
+}
+
+function renderAdminCategories(menu, container) {
+  let rows = "";
+  if (menu.categories.length === 0) {
+    rows = '<p class="center-msg">Henüz kategori yok.</p>';
+  }
+  menu.categories.forEach((cat, idx) => {
+    const mv =
+      (idx > 0 ? '<button class="mv" data-cat-up="' + esc(cat) + '" title="Yukarı taşı">↑</button>' : "") +
+      (idx < menu.categories.length - 1 ? '<button class="mv" data-cat-down="' + esc(cat) + '" title="Aşağı taşı">↓</button>' : "");
+    rows +=
+      '<div class="admin-item glass">' +
+        '<div class="admin-item-row">' +
+          "<div>" +
+            '<div class="admin-item-name">' + esc(menu.labels[cat].tr) + "</div>" +
+            '<div class="admin-item-en">' + esc(menu.labels[cat].en) + "</div>" +
+          "</div>" +
+          '<div class="admin-item-btns" style="margin-top:0;flex:0 0 auto;">' +
+            mv +
+            (menu.categories.length > 1 ? '<button class="del-btn" data-cat-del="' + esc(cat) + '">SİL</button>' : "") +
+          "</div>" +
+        "</div>" +
+      "</div>";
+  });
+
+  container.innerHTML =
+    '<button class="btn-block btn-sea" id="addCatBtn" style="margin:10px 0 16px;">+ YENİ KATEGORİ EKLE</button>' +
+    "<div>" + rows + "</div>";
+
+  container.querySelector("#addCatBtn").addEventListener("click", () => openCatForm(menu));
+
+  container.querySelectorAll("[data-cat-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      moveCategory(menu, btn.dataset.catUp, -1);
+      saveMenu(menu);
+      renderAdminCategories(menu, container);
+    });
+  });
+
+  container.querySelectorAll("[data-cat-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      moveCategory(menu, btn.dataset.catDown, 1);
+      saveMenu(menu);
+      renderAdminCategories(menu, container);
+    });
+  });
+
+  container.querySelectorAll("[data-cat-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cat = btn.dataset.catDel;
+      if (menu.categories.length <= 1) { alert("Son kategori silinemez."); return; }
+      if (window.confirm('"' + menu.labels[cat].tr + '" kategorisi silinsin mi?')) {
+        menu.categories = menu.categories.filter(c => c !== cat);
+        delete menu.labels[cat];
+        menu.items = menu.items.filter(i => i.cat !== cat);
+        if (adminCat === cat) adminCat = menu.categories[0];
+        saveMenu(menu);
+        renderAdminCategories(menu, container);
+      }
+    });
+  });
+}
+
+function renderAdminPopup(menu, container) {
+  const p = menu.popup || { enabled: false, image: "", title: "", subtitle: "" };
+  container.innerHTML =
+    '<div class="form-card glass" style="margin-top:10px;">' +
+      "<h3>POP-UP AYARLARI</h3>" +
+      '<label class="field-label" style="display:flex;align-items:center;gap:10px;text-transform:none;letter-spacing:.04em;">' +
+        '<input type="checkbox" id="popEnabled" ' + (p.enabled ? "checked" : "") + ' style="width:auto;">' +
+        "Pop-up Aktif" +
+      "</label>" +
+      '<label class="field-label" for="popImg">Görsel URL</label>' +
+      '<input id="popImg" value="' + esc(p.image) + '" placeholder="https://...">' +
+      '<label class="field-label" for="popTitle">Başlık (isteğe bağlı)</label>' +
+      '<input id="popTitle" value="' + esc(p.title || "") + '" placeholder="Örn: Yeni İndirim!">' +
+      '<label class="field-label" for="popSub">Alt Yazı (isteğe bağlı)</label>' +
+      '<input id="popSub" value="' + esc(p.subtitle || "") + '" placeholder="Örn: Tüm pizzalarda %20 indirim">' +
+      '<div class="form-btns" style="margin-top:22px;">' +
+        '<button type="button" class="btn-sea" id="popSave">KAYDET</button>' +
+        '<button type="button" class="btn-outline" id="popPreview">ÖNİZLE</button>' +
+        '<button type="button" class="btn-outline" id="popResetShow" style="border-color:var(--red);color:var(--red);">GÖSTERİMİ SIFIRLA</button>' +
+      "</div>" +
+    "</div>";
+
+  container.querySelector("#popSave").addEventListener("click", () => {
+    menu.popup = {
+      enabled: document.getElementById("popEnabled").checked,
+      image: document.getElementById("popImg").value.trim(),
+      title: document.getElementById("popTitle").value.trim(),
+      subtitle: document.getElementById("popSub").value.trim()
+    };
+    saveMenu(menu);
+    alert("Pop-up ayarları kaydedildi.");
+  });
+
+  container.querySelector("#popPreview").addEventListener("click", () => {
+    sessionStorage.removeItem("hb-popup-seen");
+    alert("Menüye dönüp sayfayı yenileyerek pop-up'ı görebilirsin.");
+  });
+
+  container.querySelector("#popResetShow").addEventListener("click", () => {
+    sessionStorage.removeItem("hb-popup-seen");
+    alert("Pop-up ziyaretçilere tekrar gösterilecek.");
+  });
+}
+
+function moveCategory(menu, cat, dir) {
+  const idx = menu.categories.indexOf(cat);
+  if (idx < 0) return;
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= menu.categories.length) return;
+  const temp = menu.categories[idx];
+  menu.categories[idx] = menu.categories[newIdx];
+  menu.categories[newIdx] = temp;
 }
 
 function slugify(s) {
@@ -1017,7 +1213,7 @@ function openCatForm(menu) {
 
 function openForm(item, menu) {
   const editing = !!item;
-  const v = item || { cat: adminCat, tr: "", en: "", price: "", itr: "", ien: "" };
+  const v = item || { cat: adminCat, tr: "", en: "", price: "", itr: "", ien: "", img: "" };
 
   let options = "";
   menu.categories.forEach(c => {
@@ -1040,6 +1236,8 @@ function openForm(item, menu) {
         '<input id="fEn" required value="' + esc(v.en) + '">' +
         '<label class="field-label">Fiyat (₺)</label>' +
         '<input id="fPrice" required inputmode="decimal" placeholder="örn: 250" value="' + esc(String(v.price).replace(/\.00$/, "")) + '">' +
+        '<label class="field-label">Görsel URL (isteğe bağlı)</label>' +
+        '<input id="fImg" value="' + esc(v.img || "") + '" placeholder="https://ornek.com/yemek.jpg">' +
         '<label class="field-label">İçindekiler (Türkçe)</label>' +
         '<textarea id="fItr" rows="3">' + esc(v.itr) + "</textarea>" +
         '<label class="field-label">İçindekiler (İngilizce)</label>' +
@@ -1069,6 +1267,7 @@ function openForm(item, menu) {
       tr: overlay.querySelector("#fTr").value.trim(),
       en: overlay.querySelector("#fEn").value.trim(),
       price: price,
+      img: overlay.querySelector("#fImg").value.trim(),
       itr: overlay.querySelector("#fItr").value.trim(),
       ien: overlay.querySelector("#fIen").value.trim()
     };
