@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -137,12 +136,46 @@
     font-size:14px;font-weight:600;border:1px solid rgba(242,179,61,.45);
   }
   .item-ing{font-size:13px;line-height:1.55;color:var(--ink-soft);margin-top:5px;}
-  .item-img-wrap{width:64px;height:64px;border-radius:var(--r-sm);flex-shrink:0;overflow:hidden;background:rgba(34,49,60,.06);}
+  .item-img-wrap{width:64px;height:64px;border-radius:var(--r-sm);flex-shrink:0;overflow:hidden;background:rgba(34,49,60,.06);cursor:pointer;transition:transform .15s;}
+  .item-img-wrap:active{transform:scale(.95);}
   .item-img{width:100%;height:100%;object-fit:cover;display:block;}
   .menu-footer{margin-top:44px;text-align:center;font-size:10px;letter-spacing:.3em;color:var(--ink-soft);}
   .menu-footer a{display:inline-block;margin-top:13px;text-decoration:underline;font-size:11px;letter-spacing:.14em;}
   .center-msg{text-align:center;padding:64px 0;letter-spacing:.08em;color:var(--ink-soft);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- lightbox (ürün görseli büyütme) ---------- */
+  .lb-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(34,49,60,.85);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;animation:fadeIn .25s ease both;
+  }
+  .lb-box{position:relative;max-width:100%;max-height:90vh;animation:lbZoom .3s cubic-bezier(.22,1,.36,1) both;}
+  .lb-box img{
+    max-width:100%;max-height:85vh;
+    width:auto;height:auto;
+    border-radius:var(--r-md);
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    display:block;
+  }
+  .lb-close{
+    position:absolute;top:-44px;right:0;
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,.95);border:none;
+    font-size:24px;line-height:1;color:var(--ink);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.2);transition:transform .15s;
+  }
+  .lb-close:active{transform:scale(.92);}
+  .lb-caption{
+    position:absolute;bottom:-36px;left:0;right:0;
+    text-align:center;color:#fff;font-size:14px;
+    font-weight:500;letter-spacing:.04em;
+    text-shadow:0 2px 8px rgba(0,0,0,.5);
+  }
+  @keyframes lbZoom{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
 
   /* ---------- popup ---------- */
   .popup-overlay{position:fixed;inset:0;z-index:100;background:rgba(34,49,60,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease both;}
@@ -709,6 +742,34 @@ function waSVG() {
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.186 8.186 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/></svg>';
 }
 
+/* ================= LIGHTBOX (ürün görseli büyütme) ================= */
+function openLightbox(src, caption) {
+  if (!src) return;
+  const overlay = document.createElement("div");
+  overlay.className = "lb-overlay";
+  overlay.id = "lbOverlay";
+  overlay.innerHTML =
+    '<div class="lb-box">' +
+      '<button class="lb-close" onclick="closeLightbox()">&times;</button>' +
+      '<img src="' + esc(src) + '" alt="" onerror="closeLightbox()">' +
+      (caption ? '<div class="lb-caption">' + esc(caption) + "</div>" : "") +
+    "</div>";
+  document.body.appendChild(overlay);
+  overlay.addEventListener("click", e => { if (e.target === overlay) closeLightbox(); });
+}
+
+function closeLightbox() {
+  const el = document.getElementById("lbOverlay");
+  if (el) el.remove();
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    closeLightbox();
+    closePopup();
+  }
+});
+
 /* ================= POPUP ================= */
 function closePopup() {
   const el = document.getElementById("popupOverlay");
@@ -756,15 +817,16 @@ function renderMenu(lang) {
     let rows = "";
     g.items.forEach(item => {
       const ing = (lang === "tr" ? item.itr : item.ien) || "";
+      const itemName = lang === "tr" ? item.tr : item.en;
       const imgHtml = item.img
-        ? '<div class="item-img-wrap"><img src="' + esc(item.img) + '" class="item-img" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
+        ? '<div class="item-img-wrap" data-lb="' + esc(item.img) + '" data-cap="' + esc(itemName) + '"><img src="' + esc(item.img) + '" class="item-img" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
         : "";
       rows +=
         '<div class="item-card glass" style="display:flex;align-items:center;gap:14px;">' +
           imgHtml +
           '<div style="flex:1;min-width:0;">' +
             '<div class="item-top">' +
-              '<span class="item-name">' + esc(lang === "tr" ? item.tr : item.en) + "</span>" +
+              '<span class="item-name">' + esc(itemName) + "</span>" +
               '<span class="price-pill">' + esc(fmtPrice(item.price)) + "</span>" +
             "</div>" +
             (ing ? '<p class="item-ing">' + esc(ing) + "</p>" : "") +
@@ -821,6 +883,13 @@ function renderMenu(lang) {
     chip.addEventListener("click", () => {
       const el = document.getElementById(chip.dataset.target);
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  // Lightbox tıklamaları
+  app.querySelectorAll(".item-img-wrap").forEach(wrap => {
+    wrap.addEventListener("click", () => {
+      openLightbox(wrap.dataset.lb, wrap.dataset.cap);
     });
   });
 
