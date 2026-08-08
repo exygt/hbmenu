@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -142,7 +136,8 @@
     font-size:14px;font-weight:600;border:1px solid rgba(242,179,61,.45);
   }
   .item-ing{font-size:13px;line-height:1.55;color:var(--ink-soft);margin-top:5px;}
-  .item-img{width:64px;height:64px;border-radius:var(--r-sm);object-fit:cover;flex-shrink:0;background:rgba(34,49,60,.06);}
+  .item-img-wrap{width:64px;height:64px;border-radius:var(--r-sm);flex-shrink:0;overflow:hidden;background:rgba(34,49,60,.06);}
+  .item-img{width:100%;height:100%;object-fit:cover;display:block;}
   .menu-footer{margin-top:44px;text-align:center;font-size:10px;letter-spacing:.3em;color:var(--ink-soft);}
   .menu-footer a{display:inline-block;margin-top:13px;text-decoration:underline;font-size:11px;letter-spacing:.14em;}
   .center-msg{text-align:center;padding:64px 0;letter-spacing:.08em;color:var(--ink-soft);}
@@ -248,6 +243,7 @@
     font-size:12.5px;line-height:1.65;color:var(--sun-deep);
   }
   .publish-bar{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+  .hint{font-size:11.5px;color:var(--ink-soft);margin-top:4px;line-height:1.5;}
 
   /* ---------- overlay / modal (admin form) ---------- */
   .overlay{
@@ -280,9 +276,14 @@
 <script>
 /*MENU_DATA_START*/
 const MENU_DATA = {
+  "popup": {
+    "enabled": false,
+    "image": "",
+    "title": "",
+    "subtitle": ""
+  },
   "categories": [
     "aparatif",
-    "ana-yemekler",
     "pizza",
     "manti",
     "hamburger",
@@ -308,10 +309,6 @@ const MENU_DATA = {
     "icecek": {
       "tr": "İçecekler",
       "en": "Drinks"
-    },
-    "ana-yemekler": {
-      "tr": "Ana Yemekler",
-      "en": "Main Course"
     }
   },
   "items": [
@@ -322,7 +319,8 @@ const MENU_DATA = {
       "en": "French Fries",
       "price": "400",
       "itr": "Patates, baharat, tuz. Ketçap ve mayonez ile.",
-      "ien": "French fries, spice, salt. With ketchup and mayonnaise."
+      "ien": "French fries, spice, salt. With ketchup and mayonnaise.",
+      "img": ""
     },
     {
       "id": 4,
@@ -332,7 +330,7 @@ const MENU_DATA = {
       "price": "450",
       "itr": "",
       "ien": "",
-      "img": "https://hizliresim.com/el9nyu3g"
+      "img": ""
     },
     {
       "id": 5,
@@ -341,7 +339,8 @@ const MENU_DATA = {
       "en": "Mixed Pizza",
       "price": "650",
       "itr": "Sucuk, sosis, mısır, zeytin, kırmızı biber, yeşil biber.",
-      "ien": "Loaded with Turkish sausage, beef sausage, corn, olives, red pepper, green pepper."
+      "ien": "Loaded with Turkish sausage, beef sausage, corn, olives, red pepper, green pepper.",
+      "img": ""
     },
     {
       "id": 6,
@@ -350,7 +349,8 @@ const MENU_DATA = {
       "en": "Smoked Meat Pizza",
       "price": "750",
       "itr": "Mozzarella peyniri, mısır, cherry domates ve füme et dilimleri ile.",
-      "ien": "With mozzarella cheese, corn, cherry tomatoes, and smoked beef slices."
+      "ien": "With mozzarella cheese, corn, cherry tomatoes, and smoked beef slices.",
+      "img": ""
     },
     {
       "id": 7,
@@ -359,7 +359,8 @@ const MENU_DATA = {
       "en": "Mantı",
       "price": "500",
       "itr": "Yoğurt ve sos ile servis edilir.",
-      "ien": "Served with yogurt and a special sauce."
+      "ien": "Served with yogurt and a special sauce.",
+      "img": ""
     },
     {
       "id": 10,
@@ -369,7 +370,7 @@ const MENU_DATA = {
       "price": "600",
       "itr": "Dana köfte, marul, domates, burger sos, patates kızartması ile.",
       "ien": "Beef patty, lettuce, tomato, burger sauce, served with fries.",
-      "img": "https://hizliresim.com/tkxhjs38"
+      "img": ""
     },
     {
       "id": 11,
@@ -378,7 +379,8 @@ const MENU_DATA = {
       "en": "Cheeseburger",
       "price": "650",
       "itr": "Dana köfte, cheddar peyniri, marul, domates, özel sos. Patates kızartması ile.",
-      "ien": "Beef patty, cheddar cheese, lettuce, tomato, special sauce. With french fries."
+      "ien": "Beef patty, cheddar cheese, lettuce, tomato, special sauce. With french fries.",
+      "img": ""
     },
     {
       "id": 12,
@@ -387,7 +389,8 @@ const MENU_DATA = {
       "en": "Chicken Burger",
       "price": "550",
       "itr": "Çıtır tavuk fileto, marul, domates ve özel burger sosu ile.",
-      "ien": "Crispy chicken fillet with lettuce, tomato, and special burger sauce."
+      "ien": "Crispy chicken fillet with lettuce, tomato, and special burger sauce.",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -396,7 +399,8 @@ const MENU_DATA = {
       "price": "50",
       "itr": "",
       "ien": "",
-      "id": 1785450539631
+      "id": 1785450539631,
+      "img": ""
     },
     {
       "id": 14,
@@ -405,7 +409,8 @@ const MENU_DATA = {
       "en": "Soft Drinks",
       "price": "150",
       "itr": "Coca Cola, Fanta, Sprite, Fuse Tea",
-      "ien": "Coca Cola, Fanta, Sprite, Fuse Tea"
+      "ien": "Coca Cola, Fanta, Sprite, Fuse Tea",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -414,7 +419,8 @@ const MENU_DATA = {
       "price": "125",
       "itr": "",
       "ien": "",
-      "id": 1785488786310
+      "id": 1785488786310,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -423,7 +429,8 @@ const MENU_DATA = {
       "price": "500",
       "itr": "Dana sosis, çıtır patates kızartması.",
       "ien": "Beef sausage with crispy french fries.",
-      "id": 1785447511608
+      "id": 1785447511608,
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -433,7 +440,7 @@ const MENU_DATA = {
       "itr": "Çıtır Tavuk ve patates kızartması",
       "ien": "Crispy chicken and french fries.",
       "id": 1785447948858,
-      "img": "https://hizliresim.com/zcramfi0"
+      "img": ""
     },
     {
       "cat": "aparatif",
@@ -442,7 +449,8 @@ const MENU_DATA = {
       "price": "700",
       "itr": "Çıtır tavuk parçaları, dana sosis, çıtır soğan halkası ve patates kızartması ile.",
       "ien": "Crispy chicken bites, beef sausage, crispy onion rings, and french fries.",
-      "id": 1785448249352
+      "id": 1785448249352,
+      "img": ""
     },
     {
       "id": 15,
@@ -451,7 +459,8 @@ const MENU_DATA = {
       "en": "RedBull",
       "price": "175",
       "itr": "",
-      "ien": ""
+      "ien": "",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -460,7 +469,8 @@ const MENU_DATA = {
       "price": "175",
       "itr": "",
       "ien": "",
-      "id": 1785496413767
+      "id": 1785496413767,
+      "img": ""
     },
     {
       "id": 13,
@@ -469,7 +479,8 @@ const MENU_DATA = {
       "en": "Capri Sun",
       "price": "100",
       "itr": "",
-      "ien": ""
+      "ien": "",
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -478,7 +489,8 @@ const MENU_DATA = {
       "price": "100",
       "itr": "",
       "ien": "",
-      "id": 1785451348074
+      "id": 1785451348074,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -487,7 +499,8 @@ const MENU_DATA = {
       "price": "300",
       "itr": "",
       "ien": "",
-      "id": 1785485854556
+      "id": 1785485854556,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -496,7 +509,8 @@ const MENU_DATA = {
       "price": "350",
       "itr": "Pilsen, Malt, Green",
       "ien": "Pilsen, Malt, Green",
-      "id": 1785449034634
+      "id": 1785449034634,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -505,7 +519,8 @@ const MENU_DATA = {
       "price": "375",
       "itr": "",
       "ien": "",
-      "id": 1785449068818
+      "id": 1785449068818,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -514,7 +529,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "",
       "ien": "",
-      "id": 1785449164442
+      "id": 1785449164442,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -523,7 +539,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "",
       "ien": "",
-      "id": 1785449181435
+      "id": 1785449181435,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -532,7 +549,8 @@ const MENU_DATA = {
       "price": "400",
       "itr": "",
       "ien": "",
-      "id": 1785449274371
+      "id": 1785449274371,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -541,7 +559,8 @@ const MENU_DATA = {
       "price": "425",
       "itr": "",
       "ien": "",
-      "id": 1785449288437
+      "id": 1785449288437,
+      "img": ""
     },
     {
       "cat": "icecek",
@@ -550,12 +569,13 @@ const MENU_DATA = {
       "price": "435",
       "itr": "",
       "ien": "",
-      "id": 1785449301720
+      "id": 1785449301720,
+      "img": ""
     },
     {
       "cat": "icecek",
-      "tr": "Kırmızı Şarap 75cl",
-      "en": "Red Wine 75cl",
+      "tr": "Kırmızı Şarap 0.70L",
+      "en": "Red Wine 0.70L",
       "price": "1000",
       "itr": "",
       "ien": "",
@@ -564,8 +584,8 @@ const MENU_DATA = {
     },
     {
       "cat": "icecek",
-      "tr": "Beyaz Şarap 75cl",
-      "en": "White Wine 75cl",
+      "tr": "Beyaz Şarap 0.70L",
+      "en": "White Wine 0.70L",
       "price": "1000",
       "itr": "",
       "ien": "",
@@ -573,12 +593,32 @@ const MENU_DATA = {
       "img": ""
     },
     {
+      "cat": "icecek",
+      "tr": "Kırmızı Şarap 1.5L",
+      "en": "Red Wine 1.5L",
+      "price": "1500",
+      "itr": "",
+      "ien": "",
+      "id": 1785449553753,
+      "img": ""
+    },
+    {
+      "cat": "icecek",
+      "tr": "Beyaz Şarap 1.5L",
+      "en": "White Wine 1.5L",
+      "price": "1500",
+      "itr": "",
+      "ien": "",
+      "id": 1785449585927,
+      "img": ""
+    },
+    {
       "cat": "aparatif",
       "tr": "Kaşarlı Tost",
       "en": "Cheese Toast",
       "price": "350",
-      "itr": "Salata ve patates kızartması ile servis edilir.",
-      "ien": "Served with salad and french fries.",
+      "itr": "",
+      "ien": "",
       "id": 1786096615325,
       "img": ""
     },
@@ -590,45 +630,9 @@ const MENU_DATA = {
       "itr": "Sucuk, Kaşar, Salam, Domatesli tost. Salata ve patates kızartması ile servis edilir.",
       "ien": "Sucuk, cheese, salami, and tomato. Served with salad and French fries.",
       "id": 1786096772645,
-      "img": "https://hizliresim.com/el9nyu3g"
-    },
-    {
-      "cat": "ana-yemekler",
-      "tr": "Izgara Köfte",
-      "en": "Grilled Meatballs",
-      "price": "600",
-      "img": "https://hizliresim.com/osw2r7qq",
-      "itr": "Salata ve patates kızartması ile servis edilir.",
-      "ien": "Served with salad and french fries.",
-      "id": 1786138161714
-    },
-    {
-      "cat": "ana-yemekler",
-      "tr": "Izgara Kanat",
-      "en": "Grilled Wings",
-      "price": "550",
-      "img": "",
-      "itr": "Salata ve patates kızartması ile servis edilir.",
-      "ien": "Served with salad and french fries.",
-      "id": 1786138252274
-    },
-    {
-      "cat": "ana-yemekler",
-      "tr": "Şinitzel",
-      "en": "Schnitzel",
-      "price": "550",
-      "img": "",
-      "itr": "Salata ve patates kızartması ile servis edilir.",
-      "ien": "Served with salad and french fries.",
-      "id": 1786138220898
+      "img": ""
     }
-  ],
-  "popup": {
-    "enabled": true,
-    "image": "https://pamistanbul.com/assets/images/projects/efes-pilsen/efes-pilsen-efes-pilsen-bira-ve-yemek-uyumu-fotografi-04.jpg",
-    "title": "İNDİRİM! Efes Pilsen Bira 250 TL",
-    "subtitle": "Bu fiyat üzerinden ekstra indirim bulunmamaktadır."
-  }
+  ]
 };
 /*MENU_DATA_END*/
 
@@ -757,7 +761,9 @@ function renderMenu(lang) {
     let rows = "";
     g.items.forEach(item => {
       const ing = (lang === "tr" ? item.itr : item.ien) || "";
-      const imgHtml = item.img ? '<img src="' + esc(item.img) + '" class="item-img" alt="" loading="lazy">' : "";
+      const imgHtml = item.img
+        ? '<div class="item-img-wrap"><img src="' + esc(item.img) + '" class="item-img" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>'
+        : "";
       rows +=
         '<div class="item-card glass" style="display:flex;align-items:center;gap:14px;">' +
           imgHtml +
@@ -843,7 +849,7 @@ function renderMenu(lang) {
       '<div class="popup-box">' +
         '<button class="popup-close" onclick="closePopup()">&times;</button>' +
         (popup.title ? '<h3 class="popup-title">' + esc(popup.title) + "</h3>" : "") +
-        '<img src="' + esc(popup.image) + '" class="popup-img" alt="">' +
+        '<img src="' + esc(popup.image) + '" class="popup-img" alt="" onerror="this.style.display=\'none\'">' +
         (popup.subtitle ? '<p class="popup-sub">' + esc(popup.subtitle) + "</p>" : "") +
       "</div>";
     document.body.appendChild(overlay);
@@ -1236,6 +1242,7 @@ function openForm(item, menu) {
         '<input id="fPrice" required inputmode="decimal" placeholder="örn: 250" value="' + esc(String(v.price).replace(/\.00$/, "")) + '">' +
         '<label class="field-label">Görsel URL (isteğe bağlı)</label>' +
         '<input id="fImg" value="' + esc(v.img || "") + '" placeholder="https://ornek.com/yemek.jpg">' +
+        '<p class="hint">⚠️ Görselin doğrudan internet linki olmalı. Instagram, WhatsApp veya bilgisayar klasöründen kopyalanan linkler çalışmaz. Imgur, Cloudinary gibi sitelerden yükleyebilirsin.</p>' +
         '<label class="field-label">İçindekiler (Türkçe)</label>' +
         '<textarea id="fItr" rows="3">' + esc(v.itr) + "</textarea>" +
         '<label class="field-label">İçindekiler (İngilizce)</label>' +
