@@ -244,6 +244,7 @@
   }
   .publish-bar{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
   .hint{font-size:11.5px;color:var(--ink-soft);margin-top:4px;line-height:1.5;}
+  .img-preview{width:100%;max-width:200px;height:120px;border-radius:var(--r-sm);object-fit:cover;margin-top:8px;background:rgba(34,49,60,.06);display:none;}
 
   /* ---------- overlay / modal (admin form) ---------- */
   .overlay{
@@ -277,13 +278,14 @@
 /*MENU_DATA_START*/
 const MENU_DATA = {
   "popup": {
-    "enabled": false,
-    "image": "",
-    "title": "",
-    "subtitle": ""
+    "enabled": true,
+    "image": "https://pamistanbul.com/assets/images/projects/efes-pilsen/efes-pilsen-efes-pilsen-bira-ve-yemek-uyumu-fotografi-04.jpg",
+    "title": "İNDİRİM! Efes Pilsen Bira 250 TL",
+    "subtitle": "Bu fiyat üzerinden ekstra indirim bulunmamaktadır."
   },
   "categories": [
     "aparatif",
+    "ana-yemekler",
     "pizza",
     "manti",
     "hamburger",
@@ -309,6 +311,10 @@ const MENU_DATA = {
     "icecek": {
       "tr": "İçecekler",
       "en": "Drinks"
+    },
+    "ana-yemekler": {
+      "tr": "Ana Yemekler",
+      "en": "Main Course"
     }
   },
   "items": [
@@ -574,8 +580,8 @@ const MENU_DATA = {
     },
     {
       "cat": "icecek",
-      "tr": "Kırmızı Şarap 0.70L",
-      "en": "Red Wine 0.70L",
+      "tr": "Kırmızı Şarap 75cl",
+      "en": "Red Wine 75cl",
       "price": "1000",
       "itr": "",
       "ien": "",
@@ -584,8 +590,8 @@ const MENU_DATA = {
     },
     {
       "cat": "icecek",
-      "tr": "Beyaz Şarap 0.70L",
-      "en": "White Wine 0.70L",
+      "tr": "Beyaz Şarap 75cl",
+      "en": "White Wine 75cl",
       "price": "1000",
       "itr": "",
       "ien": "",
@@ -593,32 +599,12 @@ const MENU_DATA = {
       "img": ""
     },
     {
-      "cat": "icecek",
-      "tr": "Kırmızı Şarap 1.5L",
-      "en": "Red Wine 1.5L",
-      "price": "1500",
-      "itr": "",
-      "ien": "",
-      "id": 1785449553753,
-      "img": ""
-    },
-    {
-      "cat": "icecek",
-      "tr": "Beyaz Şarap 1.5L",
-      "en": "White Wine 1.5L",
-      "price": "1500",
-      "itr": "",
-      "ien": "",
-      "id": 1785449585927,
-      "img": ""
-    },
-    {
       "cat": "aparatif",
       "tr": "Kaşarlı Tost",
       "en": "Cheese Toast",
       "price": "350",
-      "itr": "",
-      "ien": "",
+      "itr": "Salata ve patates kızartması ile servis edilir.",
+      "ien": "Served with salad and french fries.",
       "id": 1786096615325,
       "img": ""
     },
@@ -631,6 +617,36 @@ const MENU_DATA = {
       "ien": "Sucuk, cheese, salami, and tomato. Served with salad and French fries.",
       "id": 1786096772645,
       "img": ""
+    },
+    {
+      "cat": "ana-yemekler",
+      "tr": "Izgara Köfte",
+      "en": "Grilled Meatballs",
+      "price": "600",
+      "img": "",
+      "itr": "Salata ve patates kızartması ile servis edilir.",
+      "ien": "Served with salad and french fries.",
+      "id": 1786138161714
+    },
+    {
+      "cat": "ana-yemekler",
+      "tr": "Izgara Kanat",
+      "en": "Grilled Wings",
+      "price": "550",
+      "img": "",
+      "itr": "Salata ve patates kızartması ile servis edilir.",
+      "ien": "Served with salad and french fries.",
+      "id": 1786138252274
+    },
+    {
+      "cat": "ana-yemekler",
+      "tr": "Şinitzel",
+      "en": "Schnitzel",
+      "price": "550",
+      "img": "",
+      "itr": "Salata ve patates kızartması ile servis edilir.",
+      "ien": "Served with salad and french fries.",
+      "id": 1786138220898
     }
   ]
 };
@@ -1241,8 +1257,9 @@ function openForm(item, menu) {
         '<label class="field-label">Fiyat (₺)</label>' +
         '<input id="fPrice" required inputmode="decimal" placeholder="örn: 250" value="' + esc(String(v.price).replace(/\.00$/, "")) + '">' +
         '<label class="field-label">Görsel URL (isteğe bağlı)</label>' +
-        '<input id="fImg" value="' + esc(v.img || "") + '" placeholder="https://ornek.com/yemek.jpg">' +
-        '<p class="hint">⚠️ Görselin doğrudan internet linki olmalı. Instagram, WhatsApp veya bilgisayar klasöründen kopyalanan linkler çalışmaz. Imgur, Cloudinary gibi sitelerden yükleyebilirsin.</p>' +
+        '<input id="fImg" value="' + esc(v.img || "") + '" placeholder="https://i.imgur.com/ornek.jpg">' +
+        '<img id="imgPreview" class="img-preview" alt="">' +
+        '<p class="hint">Doğrudan görsel linki olmalı (sayfa linki değil). Imgur\'dan yüklediysen sağ tık → \"Resim adresini kopyala\" ile .jpg/.png linki al.</p>' +
         '<label class="field-label">İçindekiler (Türkçe)</label>' +
         '<textarea id="fItr" rows="3">' + esc(v.itr) + "</textarea>" +
         '<label class="field-label">İçindekiler (İngilizce)</label>' +
@@ -1254,6 +1271,23 @@ function openForm(item, menu) {
         "</div>" +
       "</div>" +
     "</form>";
+
+  // Anlık önizleme
+  const imgInput = overlay.querySelector("#fImg");
+  const imgPreview = overlay.querySelector("#imgPreview");
+  function updatePreview() {
+    const url = imgInput.value.trim();
+    if (url) {
+      imgPreview.src = url;
+      imgPreview.style.display = "block";
+      imgPreview.onerror = () => { imgPreview.style.display = "none"; };
+      imgPreview.onload = () => { imgPreview.style.display = "block"; };
+    } else {
+      imgPreview.style.display = "none";
+    }
+  }
+  imgInput.addEventListener("input", updatePreview);
+  updatePreview();
 
   overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
   overlay.querySelector("#cancelBtn").addEventListener("click", () => overlay.remove());
